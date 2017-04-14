@@ -6,7 +6,7 @@ const defaultOptions = {
   methods: {},
 }
 
-export function renderMsg (msg, args) {
+function renderMsg (msg, args) {
   return _template(args.msg || msg, { interpolate: /{{([\s\S]+?)}}/g })(args)
 }
 
@@ -75,7 +75,7 @@ function validate (model, value, modelValidations) {
   }
 }
 
-export default (Vue, options = {}) => {
+const install = (Vue, options = {}) => {
   options = {...defaultOptions, ...options}
 
   Vue.mixin({
@@ -94,12 +94,27 @@ export default (Vue, options = {}) => {
     computed: {
       $vuelidation () {
         return {
-          error: model => { return error.call(this, model) },
-          errors: () => { return this.vuelidationErrors },
-          setErrors: errors => { return setErrors.call(this, errors) },
-          valid: model => { return valid.call(this, model) },
-          options: {...options, ...this.$options.vuelidation},
-          methods: {...validations, ...options.methods, ...(this.$options.vuelidation ? this.$options.vuelidation.methods : {})},
+          error: model => {
+            return error.call(this, model)
+          },
+          errors: () => {
+            return this.vuelidationErrors
+          },
+          setErrors: errors => {
+            return setErrors.call(this, errors)
+          },
+          valid: model => {
+            return valid.call(this, model)
+          },
+          options: {
+            ...options,
+            ...this.$options.vuelidation,
+          },
+          methods: {
+            ...validations,
+            ...options.methods,
+            ...(this.$options.vuelidation.methods),
+          },
         }
       },
     },
@@ -110,4 +125,11 @@ export default (Vue, options = {}) => {
       }
     },
   })
+}
+
+export default {
+  install,
+  renderMsg,
+  defaultOptions,
+  version: '__VERSION__',
 }

@@ -2,13 +2,16 @@
   "name": "vuelidation",
   "version": "0.0.1",
   "description": "Vue.js validation",
-  "main": "dist/index.js",
+  "main": "dist/vuelidation.js",
   "repository": "github.com/cj/vuelidation",
   "author": "CJ Lazell",
   "license": "MIT",
   "scripts": {
     "test": "cross-env NODE_ENV=test eslint src && jest --no-cache --coverage",
-    "test:watch": "cross-env NODE_ENV=test jest --no-cache --watchAll --coverage"
+    "test:watch": "cross-env NODE_ENV=test jest --no-cache --watchAll --coverage",
+    "build:rollup": "rollup -c rollup.config.babel.js",
+    "build:uglify": "uglifyjs dist/vuelidation.js -o dist/vuelidation.min.js -c -m",
+    "build": "run-s build:rollup build:uglify"
   },
   "babel": {
     "presets": [
@@ -78,8 +81,13 @@
     "eslint-plugin-vue": "^2.0.1",
     "jest": "^19.0.2",
     "lodash": "^4.17.4",
-    "uglifyjs-webpack-plugin": "^0.4.2",
-    "vue": "^2.2.6",
-    "webpack": "^2.3.3"
+    "npm-run-all": "^4.0.2",
+    "rollup": "^0.41.6",
+    "rollup-plugin-buble": "^0.15.0",
+    "rollup-plugin-commonjs": "^8.0.2",
+    "rollup-plugin-node-resolve": "^3.0.0",
+    "rollup-plugin-replace": "^1.1.1",
+    "uglify-js": "^2.8.22",
+    "vue": "^2.2.6"
   }
 }

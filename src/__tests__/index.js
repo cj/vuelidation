@@ -1,8 +1,6 @@
-import Vue       from 'vue/dist/vue'
-import LoginView from './login-view'
-import Vuelidation, {
-  renderMsg,
-} from '../index'
+import Vue         from 'vue/dist/vue.common'
+import LoginView   from './login-view'
+import Vuelidation from '../index'
 
 Vue.use(Vuelidation)
 
@@ -12,7 +10,7 @@ describe('vuelidation', () => {
   })
 
   test('#renderMsg', () => {
-    const renderedMsg = renderMsg('{{ foo }}', {
+    const renderedMsg = Vuelidation.renderMsg('{{ foo }}', {
       foo: 'bar',
     })
 

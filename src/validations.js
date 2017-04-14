@@ -2,35 +2,35 @@ import _isEmpty  from 'lodash/isEmpty'
 import _isString from 'lodash/isString'
 
 export default {
-  alphabetic (value, args = {}) {
+  alphabetic (value) {
     const msg   = 'Must be a alphabetic value'
     const valid = !Array.isArray(value) && /^[a-zA-Z]*$/.test(value)
 
     return [valid, msg]
   },
 
-  alpha (value, args = {}) {
+  alpha (value) {
     const msg   = 'Must only contain letters and numbers'
     const valid = !Array.isArray(value) && /^[a-zA-Z0-9]*$/.test(value)
 
     return [valid, msg]
   },
 
-  alphaDash (value, args = {}) {
+  alphaDash (value) {
     const msg   = 'Must only contain letters, numbers, underscores or dashes'
     const valid = !Array.isArray(value) && /^[a-zA-Z0-9_-]*$/.test(value)
 
     return [valid, msg]
   },
 
-  alphaSpace (value, args = {}) {
+  alphaSpace (value) {
     let msg   = 'Must only contain letters, numbers or spaces'
     let valid = !Array.isArray(value) && /^[a-zA-Z0-9\s]*$/.test(value)
 
     return [valid, msg]
   },
 
-  between (value, args = {}) {
+  between (value, args) {
     let msg   = 'Must be between {{ min }} and {{ max }}'
     let valid = Number(args.min) <= value && Number(args.max) >= value
 
@@ -41,15 +41,11 @@ export default {
     let points = args.points || (args.points = '*')
     let msg    = 'Must be a decimal<% if (points && points !== "*") { %> with {{ points }} points<% } %>'
 
-    if (Array.isArray(value)) {
+    if (value === null || value === undefined || value === '') {
       return [false, msg]
     }
 
-    if (value === null || value === undefined || value === '') {
-      return [true, msg]
-    }
-
-    const regexPart = points === '*' ? '*' : `{0,${points}}`
+    const regexPart = points === '*' ? '*' : `{${points},${points}}`
     const regex = new RegExp(`^[0-9]*.?[0-9]${regexPart}$`)
 
     if (!regex.test(value)) {
@@ -66,21 +62,21 @@ export default {
     return [valid, msg]
   },
 
-  includes (value, args = {}) {
+  includes (value, args) {
     args.value = value
-    let values = args.values || (args.values = [])
+    let values = args.values
     let msg  = '{{ value }} is not one of the following: {{ values.join(", ") }}'
 
     return [!!values.filter(option => option === value).length, msg]
   },
 
-  numeric (value, args = {}) {
+  numeric (value) {
     let msg = 'Must be a numeric value'
 
     return [!Array.isArray(value) && /^[0-9]*$/.test(value), msg]
   },
 
-  required (value, args = {}) {
+  required (value) {
     let msg = 'Required'
 
     if (_isString(value)) {
