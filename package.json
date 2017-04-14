@@ -1,0 +1,85 @@
+{
+  "name": "vuelidation",
+  "version": "0.0.1",
+  "description": "Vue.js validation",
+  "main": "dist/index.js",
+  "repository": "github.com/cj/vuelidation",
+  "author": "CJ Lazell",
+  "license": "MIT",
+  "scripts": {
+    "test": "cross-env NODE_ENV=test eslint src && jest --no-cache --coverage",
+    "test:watch": "cross-env NODE_ENV=test jest --no-cache --watchAll --coverage"
+  },
+  "babel": {
+    "presets": [
+      "vue-app",
+      "es2015"
+    ],
+    "plugins": [
+      [
+        "istanbul",
+        {
+          "include": [
+            "src/**/*.{js,vue}"
+          ],
+          "exclude": [
+            "**/*.__transform__.js",
+            "**/__tests__/**",
+            "**/__mocks__/**"
+          ]
+        }
+      ]
+    ]
+  },
+  "jest": {
+    "moduleFileExtensions": [
+      "js",
+      "vue"
+    ],
+    "transformIgnorePatterns": [
+      "/node_modules/(?!(vues/(index.js|lib)))"
+    ],
+    "transform": {
+      ".*\\.(vue)$": "<rootDir>/jest/transform-vue.js",
+      ".*": "babel-jest"
+    },
+    "collectCoverageFrom": [
+      "src/**/*.js"
+    ],
+    "testPathIgnorePatterns": [
+      "/node_modules/"
+    ],
+    "coverageThreshold": {
+      "global": {
+        "branches": 80,
+        "functions": 50,
+        "lines": 33,
+        "statements": 25
+      }
+    }
+  },
+  "devDependencies": {
+    "babel-cli": "^6.24.1",
+    "babel-eslint": "^7.2.1",
+    "babel-loader": "^6.4.1",
+    "babel-plugin-istanbul": "^4.1.1",
+    "babel-preset-es2015": "^6.24.1",
+    "babel-preset-vue-app": "^1.1.1",
+    "clean-webpack-plugin": "^0.1.16",
+    "core-js": "^2.4.1",
+    "cross-env": "^4.0.0",
+    "eslint": "^3.19.0",
+    "eslint-config-standard": "^10.2.0",
+    "eslint-plugin-import": "^2.2.0",
+    "eslint-plugin-jest": "^19.0.1",
+    "eslint-plugin-node": "^4.2.2",
+    "eslint-plugin-promise": "^3.5.0",
+    "eslint-plugin-standard": "^3.0.1",
+    "eslint-plugin-vue": "^2.0.1",
+    "jest": "^19.0.2",
+    "lodash": "^4.17.4",
+    "uglifyjs-webpack-plugin": "^0.4.2",
+    "vue": "^2.2.6",
+    "webpack": "^2.3.3"
+  }
+}

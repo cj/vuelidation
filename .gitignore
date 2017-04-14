@@ -1,0 +1,10 @@
+node_modules/
+coverage/
+tmp/
+
+.DS_Store
+
+tags
+npm-debug.log
+
+*.logs

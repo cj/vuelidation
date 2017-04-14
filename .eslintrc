@@ -1,0 +1,33 @@
+{
+  "root": true,
+  "extends": [ "standard" ],
+  "parser": "babel-eslint",
+  "plugins": [ "jest", "vue" ],
+  "env": {
+    "browser": true,
+    "es6": true,
+    "mocha": true,
+    "node": true,
+    "jest": true
+  },
+  "globals": {
+    "expect": true,
+    "sinon": true,
+    "StatusBar": true,
+    "device": true,
+    "componentHandler": true,
+    "jest": true,
+    "jasmine": true,
+    "beforeAll": true
+  },
+  "rules": {
+    "no-multi-spaces": 0,
+    "key-spacing": 0,
+    "func-style": [2, "declaration", { "allowArrowFunctions": true }],
+    "no-confusing-arrow": 2,
+    "arrow-parens": [2, "as-needed"],
+    "require-await": 2,
+    "jest/no-identical-title": 2,
+    "comma-dangle": [2, "always-multiline"]
+  }
+}
