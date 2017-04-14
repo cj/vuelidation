@@ -27,6 +27,13 @@ describe('vuelidation', () => {
         vm = new Vue(LoginView).$mount()
       })
 
+      test('#valid', () => {
+        vm.username = 'foo'
+        vm.password = 'bar'
+
+        expect(vm.$vuelidation.valid()).toBe(true)
+      })
+
       test('#errors', () => {
         vm.$vuelidation.valid()
 
@@ -36,10 +43,22 @@ describe('vuelidation', () => {
       })
 
       test('#error', () => {
+        expect(vm.$vuelidation.error('notDefined')).toEqual(null)
+
         vm.$vuelidation.valid()
 
         expect(vm.$vuelidation.error('username')).toEqual('Required')
         expect(vm.$vuelidation.error('password')).toEqual('Required')
+      })
+
+      test('#setErrors', () => {
+        vm.$vuelidation.setErrors({
+          username: ['invalid', 'duplicate'],
+          password: 'invalid',
+        })
+
+        expect(vm.$vuelidation.error('username')).toEqual('Invalid')
+        expect(vm.$vuelidation.error('password')).toEqual('Invalid')
       })
     })
   })

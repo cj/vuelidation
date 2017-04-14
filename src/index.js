@@ -24,9 +24,7 @@ function error (model) {
   const errors = this.vuelidationErrors || {}
   let error    = errors[model]
 
-  if (error) {
-    return error[0]
-  }
+  return error ? error[0] : null
 }
 
 function setErrors (newErrors) {
@@ -40,14 +38,10 @@ function setErrors (newErrors) {
     }
 
     modelValidations.forEach(msg => {
-      let validation = this.$vuelidation.methods[msg]
-      let customMsg  = this.$vuelidation.options.msg[msg]
+      let validation    = this.$vuelidation.methods[msg]
+      let validationMsg = this.$vuelidation.options.msg[msg] || msg
 
-      if (customMsg) {
-        msg = customMsg
-      }
-
-      errors[model].push(renderMsg(msg, validation || {}))
+      errors[model].push(renderMsg(validationMsg, validation || {}))
     })
   })
 }
@@ -62,7 +56,6 @@ function validate (model, value, modelValidations) {
       const [valid, msg] = validation(value, args)
 
       if (!valid) {
-        errors = errors || []
         errors.push(renderMsg(msg, args))
       }
     }
