@@ -1,6 +1,6 @@
 {
   "name": "vuelidation",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Vue.js validation",
   "main": "dist/vuelidation.js",
   "repository": "github.com/cj/vuelidation",
@@ -87,6 +87,7 @@
     "rollup-plugin-commonjs": "^8.0.2",
     "rollup-plugin-node-resolve": "^3.0.0",
     "rollup-plugin-replace": "^1.1.1",
+    "rollup-watch": "^3.2.2",
     "uglify-js": "^2.8.22",
     "vue": "^2.2.6"
   }
