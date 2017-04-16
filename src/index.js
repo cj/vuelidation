@@ -1,5 +1,22 @@
 import validations from './validations'
 import _template   from 'lodash/template'
+import _get        from 'lodash/get'
+
+const pathDelimiter = '.'
+
+function flatten (source, flattened = {}, keySoFar = '') {
+  function getNextKey (key) {
+    return `${keySoFar}${keySoFar ? pathDelimiter : ''}${key}`
+  }
+  if (typeof source === 'object') {
+    for (const key in source) {
+      flatten(source[key], flattened, getNextKey(key))
+    }
+  } else {
+    flattened[keySoFar] = source
+  }
+  return flattened
+}
 
 const defaultOptions = {
   msg: {},
@@ -10,11 +27,14 @@ function renderMsg (msg, args) {
   return _template(args.msg || msg, { interpolate: /{{([\s\S]+?)}}/g })(args)
 }
 
-function valid (modelName) {
-  let validations = modelName ? this.$options.vuelidation.model[modelName] : this.$options.vuelidation.model
+function valid (path) {
+  let models      = this.$options.vuelidation.model
+  let validations = _get(models, path, models)
 
   Object.entries(validations).forEach(([model, modelValidations]) => {
-    validate.call(this, model, this[model], modelValidations)
+    let modelPath = path ? `${path}.${model}` : model
+
+    validate.call(this, modelPath, _get(this, modelPath), modelValidations)
   })
 
   return !this.vuelidationErrors
@@ -46,8 +66,16 @@ function setErrors (newErrors) {
   })
 }
 
-function validate (model, value, modelValidations) {
+function validate (path, value, modelValidations) {
   let errors = []
+
+  if (modelValidations.if && !modelValidations.if.call(this)) {
+    return
+  }
+
+  if (modelValidations.unless && !!modelValidations.unless.call(this)) {
+    return
+  }
 
   Object.entries(modelValidations).forEach(([name, args]) => {
     let validation = this.$vuelidation.methods[name]
@@ -63,10 +91,10 @@ function validate (model, value, modelValidations) {
 
   if (errors.length) {
     this.vuelidationErrors = this.vuelidationErrors || {}
-    this.vuelidationErrors[model] = errors
+    this.vuelidationErrors[path] = errors
   } else if (this.vuelidationErrors) {
-    if (this.vuelidationErrors[model]) {
-      delete this.vuelidationErrors[model]
+    if (this.vuelidationErrors[path]) {
+      delete this.vuelidationErrors[path]
     }
 
     if (Object.keys(this.vuelidationErrors).length === 0) {
@@ -83,10 +111,14 @@ const install = (Vue, options = {}) => {
       const vuelidation = this.$options.vuelidation
 
       if (vuelidation && vuelidation.model) {
-        Object.entries(vuelidation.model).forEach(([model, modelValidations]) => {
-          this.$watch(model, value => {
-            validate.call(this, model, value, modelValidations)
-          })
+        Object.entries(flatten(this.$data)).forEach(([path, _]) => {
+          let validations = _get(vuelidation.model, path)
+
+          if (validations) {
+            this.$watch(path, value => {
+              validate.call(this, path, value, validations)
+            })
+          }
         })
       }
     },
@@ -97,8 +129,8 @@ const install = (Vue, options = {}) => {
           error: model => {
             return error.call(this, model)
           },
-          errors: () => {
-            return this.vuelidationErrors
+          errors: path => {
+            return _get(this.vuelidationErrors, path, this.vuelidationErrors)
           },
           setErrors: errors => {
             return setErrors.call(this, errors)

@@ -25,9 +25,17 @@ describe('vuelidation', () => {
         vm = new Vue(LoginView).$mount()
       })
 
+      test('installed', () => {
+        expect(vm.$data.vuelidationErrors).toBe(null)
+      })
+
       test('#valid', () => {
         vm.username = 'foo'
         vm.password = 'bar'
+
+        expect(vm.$vuelidation.valid()).toBe(false)
+
+        vm.fullName = 'fooBar'
 
         expect(vm.$vuelidation.valid()).toBe(true)
       })
@@ -36,6 +44,22 @@ describe('vuelidation', () => {
         vm.$vuelidation.valid()
 
         expect(Object.keys(vm.$vuelidation.errors())).toEqual(
+          expect.arrayContaining(['username', 'password'])
+        )
+
+        vm.$vuelidation.reset()
+        vm.$vuelidation.valid('address')
+
+        expect(Object.keys(vm.$vuelidation.errors('address'))).toEqual(
+          expect.arrayContaining([
+            'address.line1',
+            'address.city',
+            'address.state',
+            'address.zip',
+          ])
+        )
+
+        expect(Object.keys(vm.$vuelidation.errors())).not.toEqual(
           expect.arrayContaining(['username', 'password'])
         )
       })
@@ -58,6 +82,21 @@ describe('vuelidation', () => {
         expect(vm.$vuelidation.error('username')).toEqual('Invalid')
         expect(vm.$vuelidation.error('password')).toEqual('Invalid')
       })
+
+      test('#reset', () => {
+        vm.$vuelidation.valid()
+        vm.$vuelidation.reset()
+
+        expect(vm.$vuelidation.errors()).toBe(null)
+      })
+    })
+
+    test('no vuelidation options', () => {
+      let vm = new Vue({
+        render (h) {
+          return <div></div>
+        },
+      }).$mount()
     })
   })
 })

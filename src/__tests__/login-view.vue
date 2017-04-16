@@ -6,6 +6,7 @@
       return {
         username: '',
         password: '',
+        email: '',
 
         address: {
           line1: '',
@@ -25,6 +26,20 @@
 
         password: {
           required: true,
+        },
+
+        email: {
+          required: true,
+
+          unless () { return this.username },
+        },
+
+        fullName: {
+          required: true,
+
+          if () {
+            return !!this.username.length
+          },
         },
 
         address: {
