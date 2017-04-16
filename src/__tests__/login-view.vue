@@ -19,7 +19,7 @@
     },
 
     vuelidation: {
-      model: {
+      data: {
         username: {
           required: true,
         },

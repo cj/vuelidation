@@ -28,21 +28,21 @@ function renderMsg (msg, args) {
 }
 
 function valid (path) {
-  let models      = this.$options.vuelidation.model
-  let validations = _get(models, path, models)
+  let data        = this.$options.vuelidation.data
+  let validations = _get(data, path, data)
 
-  Object.entries(validations).forEach(([model, modelValidations]) => {
-    let modelPath = path ? `${path}.${model}` : model
+  Object.entries(validations).forEach(([dataName, dataValidations]) => {
+    let dataPath = path ? `${path}.${dataName}` : dataName
 
-    validate.call(this, modelPath, _get(this, modelPath), modelValidations)
+    validate.call(this, dataPath, _get(this, dataPath), dataValidations)
   })
 
   return !this.vuelidationErrors
 }
 
-function error (model) {
+function error (dataName) {
   const errors = this.vuelidationErrors || {}
-  let error    = errors[model]
+  let error    = errors[dataName]
 
   return error ? error[0] : null
 }
@@ -50,34 +50,34 @@ function error (model) {
 function setErrors (newErrors) {
   let errors = this.vuelidationErrors = this.vuelidationErrors || {}
 
-  Object.entries(newErrors).forEach(([model, modelValidations]) => {
-    errors[model] = []
+  Object.entries(newErrors).forEach(([dataName, dataValidations]) => {
+    errors[dataName] = []
 
-    if (!Array.isArray(modelValidations)) {
-      modelValidations = Array(modelValidations)
+    if (!Array.isArray(dataValidations)) {
+      dataValidations = Array(dataValidations)
     }
 
-    modelValidations.forEach(msg => {
+    dataValidations.forEach(msg => {
       let validation    = this.$vuelidation.methods[msg]
       let validationMsg = this.$vuelidation.options.msg[msg] || msg
 
-      errors[model].push(renderMsg(validationMsg, validation || {}))
+      errors[dataName].push(renderMsg(validationMsg, validation || {}))
     })
   })
 }
 
-function validate (path, value, modelValidations) {
+function validate (path, value, dataValidations) {
   let errors = []
 
-  if (modelValidations.if && !modelValidations.if.call(this)) {
+  if (dataValidations.if && !dataValidations.if.call(this)) {
     return
   }
 
-  if (modelValidations.unless && !!modelValidations.unless.call(this)) {
+  if (dataValidations.unless && !!dataValidations.unless.call(this)) {
     return
   }
 
-  Object.entries(modelValidations).forEach(([name, args]) => {
+  Object.entries(dataValidations).forEach(([name, args]) => {
     let validation = this.$vuelidation.methods[name]
 
     if (validation) {
@@ -110,9 +110,9 @@ const install = (Vue, options = {}) => {
     created () {
       const vuelidation = this.$options.vuelidation
 
-      if (vuelidation && vuelidation.model) {
+      if (vuelidation && vuelidation.data) {
         Object.entries(flatten(this.$data)).forEach(([path, _]) => {
-          let validations = _get(vuelidation.model, path)
+          let validations = _get(vuelidation.data, path)
 
           if (validations) {
             this.$watch(path, value => {
@@ -126,8 +126,8 @@ const install = (Vue, options = {}) => {
     computed: {
       $vuelidation () {
         return {
-          error: model => {
-            return error.call(this, model)
+          error: dataName => {
+            return error.call(this, dataName)
           },
           errors: path => {
             return _get(this.vuelidationErrors, path, this.vuelidationErrors)
@@ -138,8 +138,8 @@ const install = (Vue, options = {}) => {
           reset: () => {
             this.vuelidationErrors = null
           },
-          valid: model => {
-            return valid.call(this, model)
+          valid: dataName => {
+            return valid.call(this, dataName)
           },
           options: {
             ...options,

@@ -1,5 +1,5 @@
 /**
- * vuelidation v0.0.3
+ * vuelidation v0.0.4
  * (c) 2017 CJ Lazell
  * @license MIT
  */
@@ -3023,24 +3023,24 @@ function renderMsg (msg, args) {
 function valid (path) {
   var this$1 = this;
 
-  var models      = this.$options.vuelidation.model;
-  var validations$$1 = get_1(models, path, models);
+  var data        = this.$options.vuelidation.data;
+  var validations$$1 = get_1(data, path, data);
 
   Object.entries(validations$$1).forEach(function (ref) {
-    var model = ref[0];
-    var modelValidations = ref[1];
+    var dataName = ref[0];
+    var dataValidations = ref[1];
 
-    var modelPath = path ? (path + "." + model) : model;
+    var dataPath = path ? (path + "." + dataName) : dataName;
 
-    validate.call(this$1, modelPath, get_1(this$1, modelPath), modelValidations);
+    validate.call(this$1, dataPath, get_1(this$1, dataPath), dataValidations);
   });
 
   return !this.vuelidationErrors
 }
 
-function error (model) {
+function error (dataName) {
   var errors = this.vuelidationErrors || {};
-  var error    = errors[model];
+  var error    = errors[dataName];
 
   return error ? error[0] : null
 }
@@ -3051,38 +3051,38 @@ function setErrors (newErrors) {
   var errors = this.vuelidationErrors = this.vuelidationErrors || {};
 
   Object.entries(newErrors).forEach(function (ref) {
-    var model = ref[0];
-    var modelValidations = ref[1];
+    var dataName = ref[0];
+    var dataValidations = ref[1];
 
-    errors[model] = [];
+    errors[dataName] = [];
 
-    if (!Array.isArray(modelValidations)) {
-      modelValidations = Array(modelValidations);
+    if (!Array.isArray(dataValidations)) {
+      dataValidations = Array(dataValidations);
     }
 
-    modelValidations.forEach(function (msg) {
+    dataValidations.forEach(function (msg) {
       var validation    = this$1.$vuelidation.methods[msg];
       var validationMsg = this$1.$vuelidation.options.msg[msg] || msg;
 
-      errors[model].push(renderMsg(validationMsg, validation || {}));
+      errors[dataName].push(renderMsg(validationMsg, validation || {}));
     });
   });
 }
 
-function validate (path, value, modelValidations) {
+function validate (path, value, dataValidations) {
   var this$1 = this;
 
   var errors = [];
 
-  if (modelValidations.if && !modelValidations.if.call(this)) {
+  if (dataValidations.if && !dataValidations.if.call(this)) {
     return
   }
 
-  if (modelValidations.unless && !!modelValidations.unless.call(this)) {
+  if (dataValidations.unless && !!dataValidations.unless.call(this)) {
     return
   }
 
-  Object.entries(modelValidations).forEach(function (ref) {
+  Object.entries(dataValidations).forEach(function (ref) {
     var name = ref[0];
     var args = ref[1];
 
@@ -3124,12 +3124,12 @@ var install = function (Vue, options) {
 
       var vuelidation = this.$options.vuelidation;
 
-      if (vuelidation && vuelidation.model) {
+      if (vuelidation && vuelidation.data) {
         Object.entries(flatten(this.$data)).forEach(function (ref) {
           var path = ref[0];
           var _ = ref[1];
 
-          var validations$$1 = get_1(vuelidation.model, path);
+          var validations$$1 = get_1(vuelidation.data, path);
 
           if (validations$$1) {
             this$1.$watch(path, function (value) {
@@ -3145,8 +3145,8 @@ var install = function (Vue, options) {
         var this$1 = this;
 
         return {
-          error: function (model) {
-            return error.call(this$1, model)
+          error: function (dataName) {
+            return error.call(this$1, dataName)
           },
           errors: function (path) {
             return get_1(this$1.vuelidationErrors, path, this$1.vuelidationErrors)
@@ -3157,8 +3157,8 @@ var install = function (Vue, options) {
           reset: function () {
             this$1.vuelidationErrors = null;
           },
-          valid: function (model) {
-            return valid.call(this$1, model)
+          valid: function (dataName) {
+            return valid.call(this$1, dataName)
           },
           options: Object.assign({}, options,
             this.$options.vuelidation),
@@ -3181,7 +3181,7 @@ var index = {
   install: install,
   renderMsg: renderMsg,
   defaultOptions: defaultOptions,
-  version: '0.0.3',
+  version: '0.0.4',
 };
 
 return index;
