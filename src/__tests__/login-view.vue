@@ -38,7 +38,7 @@
           required: true,
 
           if () {
-            return !!this.username.length
+            return this.username
           },
         },
 

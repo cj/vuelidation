@@ -38,7 +38,9 @@ describe('validations', () => {
     const args = { min: 1, max: 10 }
 
     expect(between('9', args)[0]).toBe(true)
+    expect(between(9, args)[0]).toBe(true)
     expect(between('11', args)[0]).toBe(false)
+    expect(between(11, args)[0]).toBe(false)
   })
 
   test('decimal', () => {

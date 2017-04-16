@@ -1,22 +1,7 @@
-import validations from './validations'
 import _template   from 'lodash/template'
 import _get        from 'lodash/get'
-
-const pathDelimiter = '.'
-
-function flatten (source, flattened = {}, keySoFar = '') {
-  function getNextKey (key) {
-    return `${keySoFar}${keySoFar ? pathDelimiter : ''}${key}`
-  }
-  if (typeof source === 'object') {
-    for (const key in source) {
-      flatten(source[key], flattened, getNextKey(key))
-    }
-  } else {
-    flattened[keySoFar] = source
-  }
-  return flattened
-}
+import validations from './validations'
+import flatten     from './flatten'
 
 const defaultOptions = {
   msg: {},
@@ -69,11 +54,11 @@ function setErrors (newErrors) {
 function validate (path, value, dataValidations) {
   let errors = []
 
-  if (dataValidations.if && !dataValidations.if.call(this)) {
+  if (dataValidations.if && !Boolean(dataValidations.if.call(this))) { // eslint-disable-line no-extra-boolean-cast
     return
   }
 
-  if (dataValidations.unless && !!dataValidations.unless.call(this)) {
+  if (dataValidations.unless && Boolean(dataValidations.unless.call(this))) {
     return
   }
 
@@ -135,9 +120,15 @@ const install = (Vue, options = {}) => {
           setErrors: errors => {
             return setErrors.call(this, errors)
           },
-          reset:  () => {
+          reset: callback => {
+            this.vuelidationErrors = null
+
             this.$nextTick(() => {
               this.vuelidationErrors = null
+
+              if (callback) {
+                callback.call(this)
+              }
             })
           },
           valid: dataName => {

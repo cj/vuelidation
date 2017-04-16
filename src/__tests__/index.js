@@ -87,9 +87,9 @@ describe('vuelidation', () => {
       test('#reset', async () => {
         vm.$vuelidation.valid()
 
-        await vm.$vuelidation.reset()
-
-        expect(vm.$vuelidation.errors()).toBe(null)
+        await vm.$vuelidation.reset(() => {
+          expect(vm.$vuelidation.errors()).toBe(null)
+        })
       })
     })
 
@@ -99,6 +99,10 @@ describe('vuelidation', () => {
           return <div></div>
         },
       }).$mount()
+
+      expect(() => {
+        vm.$vuelidation.valid()
+      }).toThrowError(/Cannot read property 'methods' of undefined/)
     })
   })
 })

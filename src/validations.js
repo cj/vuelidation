@@ -79,6 +79,10 @@ export default {
   required (value) {
     let msg = 'Required'
 
+    if (value !== null && value !== undefined) {
+      value = value.toString()
+    }
+
     if (_isString(value)) {
       value = value.trim()
     }

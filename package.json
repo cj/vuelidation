@@ -1,6 +1,6 @@
 {
   "name": "vuelidation",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "description": "Vue.js validation",
   "main": "dist/vuelidation.js",
   "repository": "github.com/cj/vuelidation",
@@ -11,7 +11,10 @@
     "test:watch": "cross-env NODE_ENV=test jest --no-cache --watchAll --coverage",
     "rollup": "rollup -c rollup.config.babel.js",
     "rollup:compress": "COMPRESS=true rollup -c rollup.config.babel.js",
-    "build": "run-s rollup rollup:compress"
+    "rollup:watch": "rollup -c rollup.config.babel.js -w",
+    "rollup:compress:watch": "COMPRESS=true rollup -c rollup.config.babel.js -w",
+    "build": "run-p rollup rollup:compress",
+    "build:watch": "run-p rollup:watch rollup:compress:watch"
   },
   "babel": {
     "presets": [
