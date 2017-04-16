@@ -135,8 +135,10 @@ const install = (Vue, options = {}) => {
           setErrors: errors => {
             return setErrors.call(this, errors)
           },
-          reset: () => {
-            this.vuelidationErrors = null
+          reset:  () => {
+            this.$nextTick(() => {
+              this.vuelidationErrors = null
+            })
           },
           valid: dataName => {
             return valid.call(this, dataName)

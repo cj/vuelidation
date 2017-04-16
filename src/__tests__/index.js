@@ -40,14 +40,15 @@ describe('vuelidation', () => {
         expect(vm.$vuelidation.valid()).toBe(true)
       })
 
-      test('#errors', () => {
+      test('#errors', async () => {
         vm.$vuelidation.valid()
 
         expect(Object.keys(vm.$vuelidation.errors())).toEqual(
           expect.arrayContaining(['username', 'password'])
         )
 
-        vm.$vuelidation.reset()
+        await vm.$vuelidation.reset()
+
         vm.$vuelidation.valid('address')
 
         expect(Object.keys(vm.$vuelidation.errors('address'))).toEqual(
@@ -83,9 +84,10 @@ describe('vuelidation', () => {
         expect(vm.$vuelidation.error('password')).toEqual('Invalid')
       })
 
-      test('#reset', () => {
+      test('#reset', async () => {
         vm.$vuelidation.valid()
-        vm.$vuelidation.reset()
+
+        await vm.$vuelidation.reset()
 
         expect(vm.$vuelidation.errors()).toBe(null)
       })

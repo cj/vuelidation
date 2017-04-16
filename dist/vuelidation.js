@@ -1,5 +1,5 @@
 /**
- * vuelidation v0.0.4
+ * vuelidation v0.0.5
  * (c) 2017 CJ Lazell
  * @license MIT
  */
@@ -3154,8 +3154,10 @@ var install = function (Vue, options) {
           setErrors: function (errors) {
             return setErrors.call(this$1, errors)
           },
-          reset: function () {
-            this$1.vuelidationErrors = null;
+          reset:  function () {
+            this$1.$nextTick(function () {
+              this$1.vuelidationErrors = null;
+            });
           },
           valid: function (dataName) {
             return valid.call(this$1, dataName)
@@ -3181,7 +3183,7 @@ var index = {
   install: install,
   renderMsg: renderMsg,
   defaultOptions: defaultOptions,
-  version: '0.0.4',
+  version: '0.0.5',
 };
 
 return index;
