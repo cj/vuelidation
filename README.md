@@ -1,4 +1,8 @@
-<h1 style='text-align: center;'>Vuelidation <span style='font-size: .5em;'>- simple, powerful, vuejs validation. (<a href="https://codepen.io/cj/pen/BRNzgd">Example</a>)</span></h1>
+<h1 align="center">Vuelidation ✅</h1>
+
+<p align="center">
+  <q>simple, powerful, vuejs validation.</q>
+</p>
 
 <p align="center">
   <a href="https://travis-ci.org/cj/vuelidation"><img src="https://img.shields.io/travis/cj/vuelidation/master.svg" alt="Build Status" target="_blank"></a>
@@ -6,6 +10,10 @@
   <a href="https://www.npmjs.com/package/vuelidation"><img src="https://img.shields.io/npm/dt/vuelidation.svg" alt="Downloads" target="_blank"></a>
   <a href="https://gitter.im/cj/vuelidation"><img src="https://img.shields.io/badge/GITTER-join%20chat-green.svg" alt="Gitter" target="_blank"></a>
   <a href="https://github.com/cj/vuelidation/blob/master/LICENSE.md"><img src="https://img.shields.io/npm/l/vuelidation.svg" alt="License" target="_blank"></a>
+</p>
+
+<p align="center">
+  ✨ <a href="https://codepen.io/cj/pen/BRNzgd">Example</a>✨
 </p>
 
 **Install**
