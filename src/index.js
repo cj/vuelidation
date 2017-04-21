@@ -54,11 +54,11 @@ function setErrors (newErrors) {
 function validate (path, value, dataValidations) {
   let errors = []
 
-  if (dataValidations.if && !Boolean(dataValidations.if.call(this))) { // eslint-disable-line no-extra-boolean-cast
+  if (dataValidations.if && !dataValidations.if.call(this)) {
     return
   }
 
-  if (dataValidations.unless && Boolean(dataValidations.unless.call(this))) {
+  if (dataValidations.unless && !!dataValidations.unless.call(this)) {
     return
   }
 

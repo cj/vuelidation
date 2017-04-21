@@ -84,11 +84,12 @@ describe('vuelidation', () => {
         expect(vm.$vuelidation.error('password')).toEqual('Invalid')
       })
 
-      test('#reset', async () => {
+      test('#reset', done => {
         vm.$vuelidation.valid()
 
-        await vm.$vuelidation.reset(() => {
+        vm.$vuelidation.reset(() => {
           expect(vm.$vuelidation.errors()).toBe(null)
+          done()
         })
       })
     })
