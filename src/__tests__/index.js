@@ -103,7 +103,7 @@ describe('vuelidation', () => {
 
       expect(() => {
         vm.$vuelidation.valid()
-      }).toThrowError(/Cannot read property 'methods' of undefined/)
+      }).toThrowError(/Cannot read property 'valid' of undefined/)
     })
   })
 })

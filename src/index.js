@@ -110,39 +110,44 @@ const install = (Vue, options = {}) => {
 
     computed: {
       $vuelidation () {
-        return {
-          error: dataName => {
-            return error.call(this, dataName)
-          },
-          errors: path => {
-            return _get(this.vuelidationErrors, path, this.vuelidationErrors)
-          },
-          setErrors: errors => {
-            return setErrors.call(this, errors)
-          },
-          reset: callback => {
-            this.vuelidationErrors = null
-
-            this.$nextTick(() => {
+        if (this.$options.vuelidation !== undefined) {
+          return {
+            error: dataName => {
+              return error.call(this, dataName)
+            },
+            errors: path => {
+              return _get(this.vuelidationErrors, path, this.vuelidationErrors)
+            },
+            setErrors: errors => {
+              return setErrors.call(this, errors)
+            },
+            reset: callback => {
               this.vuelidationErrors = null
 
-              if (callback) {
-                callback.call(this)
-              }
-            })
-          },
-          valid: dataName => {
-            return valid.call(this, dataName)
-          },
-          options: {
-            ...options,
-            ...this.$options.vuelidation,
-          },
-          methods: {
-            ...validations,
-            ...options.methods,
-            ...(this.$options.vuelidation.methods),
-          },
+              this.$nextTick(() => {
+                this.vuelidationErrors = null
+
+                if (callback) {
+                  callback.call(this)
+                }
+              })
+            },
+            valid: dataName => {
+              return valid.call(this, dataName)
+            },
+            options: {
+              ...options,
+              ...this.$options.vuelidation,
+            },
+            methods: {
+              ...validations,
+              ...options.methods,
+              ...(this.$options.vuelidation.methods),
+              // ...(this.$options.vuelidation ? this.$options.vuelidation.methods : {}),
+            },
+          }
+        } else {
+          return undefined
         }
       },
     },
