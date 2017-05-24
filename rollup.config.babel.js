@@ -3,6 +3,7 @@ import nodeResolve from 'rollup-plugin-node-resolve'
 import commonjs    from 'rollup-plugin-commonjs'
 import replace     from 'rollup-plugin-replace'
 import uglify      from 'rollup-plugin-uglify'
+import cleanup     from 'rollup-plugin-cleanup'
 
 const version  = require('./package.json').version
 const compress = !!process.env.COMPRESS
@@ -19,6 +20,7 @@ let plugins = [
   buble({
     objectAssign: 'Object.assign',
   }),
+  cleanup(),
 ]
 
 if (compress) {
