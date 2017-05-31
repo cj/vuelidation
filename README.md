@@ -162,6 +162,27 @@ Vue.use(Vuelidation);
 
 <details>
 <summary>
+  <a href='#validations-between-length'><b>betweenLength</b></a>
+  <p style='margin: 0; '>
+    <ul style='margin: 0; padding: 0; list-style-type: none;'>
+      <li><b>msg:</b> Must have between {{ min }} and {{ max }} characters</li>
+      <li><b>arg:</b> { min: Number, max: Number }</li>
+    </ul>
+  </p>
+</summary>
+
+```javascript
+{
+  betweenLength: {
+    min: 8,
+    max: 20,
+  },
+}
+```
+</details>
+
+<details>
+<summary>
   <a href='#validations-decimal'><b>decimal</b></a>
   <p style='margin: 0; '>
     <ul style='margin: 0; padding: 0; list-style-type: none;'>
