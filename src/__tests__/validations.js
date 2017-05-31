@@ -6,6 +6,7 @@ const {
   alphaDash,
   alphaSpace,
   between,
+  betweenLength,
   decimal,
   email,
   includes,
@@ -41,6 +42,13 @@ describe('validations', () => {
     expect(between(9, args)[0]).toBe(true)
     expect(between('11', args)[0]).toBe(false)
     expect(between(11, args)[0]).toBe(false)
+  })
+
+  test('betweenLength', () => {
+    const args = { min: 8, max: 20 }
+
+    expect(betweenLength('aaaaaaaa', args)[0]).toBe(true)
+    expect(betweenLength('aaaaaaa', args)[0]).toBe(false)
   })
 
   test('decimal', () => {

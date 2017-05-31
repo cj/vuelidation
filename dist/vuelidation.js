@@ -1,5 +1,5 @@
 /**
- * vuelidation v0.0.9
+ * vuelidation v0.0.10
  * (c) 2017 CJ Lazell
  * @license MIT
  */
@@ -1243,6 +1243,11 @@ var validations = {
     var valid = Number(args.min) <= value && Number(args.max) >= value;
     return [valid, msg]
   },
+  betweenLength: function betweenLength (value, args) {
+    var msg   = 'Must have between {{ min }} and {{ max }} characters';
+    var valid = Number(args.min) <= value.length && Number(args.max) >= value.length;
+    return [valid, msg]
+  },
   decimal: function decimal (value, args) {
     if ( args === void 0 ) args = {};
     var points = args.points || (args.points = '*');
@@ -1444,7 +1449,7 @@ var index = {
   install: install,
   renderMsg: renderMsg,
   defaultOptions: defaultOptions,
-  version: '0.0.9',
+  version: '0.0.10',
 };
 
 return index;

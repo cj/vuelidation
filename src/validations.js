@@ -37,6 +37,13 @@ export default {
     return [valid, msg]
   },
 
+  betweenLength (value, args) {
+    let msg   = 'Must have between {{ min }} and {{ max }} characters'
+    let valid = Number(args.min) <= value.length && Number(args.max) >= value.length
+
+    return [valid, msg]
+  },
+
   decimal (value, args = {}) {
     let points = args.points || (args.points = '*')
     let msg    = 'Must be a decimal<% if (points && points !== "*") { %> with {{ points }} points<% } %>'
