@@ -1,5 +1,5 @@
 /**
- * vuelidation v1.0.0
+ * vuelidation v1.0.1
  * (c) 2017 CJ Lazell
  * @license MIT
  */
@@ -1240,7 +1240,7 @@ var validations = {
   },
   length: function length (value, totalLength) {
     var msg   = "Must be " + totalLength + " character(s)";
-    var valid = value.length === Number(totalLength);
+    var valid = !!value && value.length === Number(totalLength);
     return [valid, msg]
   },
   between: function between (value, args) {
@@ -1454,7 +1454,7 @@ var index = {
   install: install,
   renderMsg: renderMsg,
   defaultOptions: defaultOptions,
-  version: '1.0.0',
+  version: '1.0.1',
 };
 
 return index;

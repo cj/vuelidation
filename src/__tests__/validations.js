@@ -41,6 +41,7 @@ describe('validations', () => {
 
     expect(length('1234567890', args)[0]).toBe(true)
     expect(length('123456789', args)[0]).toBe(false)
+    expect(length(null, args)[0]).toBe(false)
   })
 
   test('between', () => {

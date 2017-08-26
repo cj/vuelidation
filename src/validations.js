@@ -32,7 +32,7 @@ export default {
 
   length (value, totalLength) {
     let msg   = `Must be ${totalLength} character(s)`
-    let valid = value.length === Number(totalLength)
+    let valid = !!value && value.length === Number(totalLength)
 
     return [valid, msg]
   },
