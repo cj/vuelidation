@@ -30,6 +30,13 @@ export default {
     return [valid, msg]
   },
 
+  length (value, totalLength) {
+    let msg   = `Must be ${totalLength} character(s)`
+    let valid = value.length === Number(totalLength)
+
+    return [valid, msg]
+  },
+
   between (value, args) {
     let msg   = 'Must be between {{ min }} and {{ max }}'
     let valid = Number(args.min) <= value && Number(args.max) >= value

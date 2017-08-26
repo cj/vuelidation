@@ -12,6 +12,7 @@ const {
   includes,
   numeric,
   required,
+  length,
 } = validations
 
 describe('validations', () => {
@@ -33,6 +34,13 @@ describe('validations', () => {
   test('alphaSpace', () => {
     expect(alphaSpace('a 1')[0]).toBe(true)
     expect(alphaSpace('-')[0]).toBe(false)
+  })
+
+  test('length', () => {
+    const args = 10
+
+    expect(length('1234567890', args)[0]).toBe(true)
+    expect(length('123456789', args)[0]).toBe(false)
   })
 
   test('between', () => {
