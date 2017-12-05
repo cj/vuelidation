@@ -1,5 +1,5 @@
 /**
- * vuelidation v1.0.1
+ * vuelidation v1.1.0
  * (c) 2017 CJ Lazell
  * @license MIT
  */
@@ -1316,7 +1316,11 @@ var defaultOptions = {
   methods: {},
 };
 function renderMsg (msg, args) {
-  return template_1(args.msg || msg, { interpolate: /{{([\s\S]+?)}}/g })(args)
+  msg = args.msg || msg;
+  if (typeof msg === 'function') {
+    msg = msg.call(this);
+  }
+  return template_1(msg, { interpolate: /{{([\s\S]+?)}}/g })(args)
 }
 function valid (path) {
   var this$1 = this;
@@ -1346,9 +1350,10 @@ function setErrors (newErrors) {
       dataValidations = Array(dataValidations);
     }
     dataValidations.forEach(function (msg) {
-      var validation    = this$1.$vuelidation.methods[msg];
+      var validation    = this$1.$vuelidation.methods[msg] || {};
       var validationMsg = this$1.$vuelidation.options.msg[msg] || msg;
-      errors[dataName].push(renderMsg(validationMsg, validation || {}));
+      validation.field = validation.field || dataName;
+      errors[dataName].push(renderMsg.call(this$1, validationMsg, validation));
     });
   });
 }
@@ -1361,16 +1366,25 @@ function validate (path, value, dataValidations) {
   if (dataValidations.unless && !!dataValidations.unless.call(this)) {
     return
   }
+  if (typeof dataValidations === 'string') {
+    return
+  }
   Object.entries(dataValidations).forEach(function (ref) {
     var name = ref[0];
     var args = ref[1];
     var validation = this$1.$vuelidation.methods[name];
+    var msgArgs = dataValidations;
+    var dataArgs = dataValidations[name];
+    msgArgs.field = msgArgs.field || path;
+    if (typeof dataArgs === 'object') {
+      Object.assign(msgArgs, dataValidations[name]);
+    }
     if (validation) {
       var ref$1 = validation(value, args);
       var valid = ref$1[0];
       var msg = ref$1[1];
       if (!valid) {
-        errors.push(renderMsg(msg, args));
+        errors.push(renderMsg.call(this$1, msg, msgArgs));
       }
     }
   });
@@ -1454,7 +1468,7 @@ var index = {
   install: install,
   renderMsg: renderMsg,
   defaultOptions: defaultOptions,
-  version: '1.0.1',
+  version: '1.1.0',
 };
 
 return index;

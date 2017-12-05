@@ -1,6 +1,6 @@
 {
   "name": "vuelidation",
-  "version": "1.0.1",
+  "version": "1.1.0",
   "description": "Vue.js validation",
   "main": "dist/vuelidation.js",
   "repository": "github.com/cj/vuelidation",

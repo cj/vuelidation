@@ -36,6 +36,7 @@ describe('vuelidation', () => {
         expect(vm.$vuelidation.valid()).toBe(false)
 
         vm.fullName = 'fooBar'
+        vm.year = 2000
 
         expect(vm.$vuelidation.valid()).toBe(true)
       })
@@ -70,7 +71,7 @@ describe('vuelidation', () => {
 
         vm.$vuelidation.valid()
 
-        expect(vm.$vuelidation.error('username')).toEqual('Required')
+        expect(vm.$vuelidation.error('username')).toEqual('username is required')
         expect(vm.$vuelidation.error('password')).toEqual('Required')
       })
 

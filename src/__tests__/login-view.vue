@@ -4,6 +4,7 @@
 
     data () {
       return {
+        requiredMsg: '{{ field }} is required',
         username: '',
         password: '',
         email: '',
@@ -21,6 +22,9 @@
     vuelidation: {
       data: {
         username: {
+          msg () {
+            return this.requiredMsg
+          },
           required: true,
         },
 
@@ -39,6 +43,13 @@
 
           if () {
             return this.username
+          },
+        },
+
+        year: {
+          between: {
+            min: 2000,
+            max: 2017,
           },
         },
 

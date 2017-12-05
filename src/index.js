@@ -9,7 +9,13 @@ const defaultOptions = {
 }
 
 function renderMsg (msg, args) {
-  return _template(args.msg || msg, { interpolate: /{{([\s\S]+?)}}/g })(args)
+  msg = args.msg || msg
+
+  if (typeof msg === 'function') {
+    msg = msg.call(this)
+  }
+
+  return _template(msg, { interpolate: /{{([\s\S]+?)}}/g })(args)
 }
 
 function valid (path) {
@@ -43,17 +49,18 @@ function setErrors (newErrors) {
     }
 
     dataValidations.forEach(msg => {
-      let validation    = this.$vuelidation.methods[msg]
+      let validation    = this.$vuelidation.methods[msg] || {}
       let validationMsg = this.$vuelidation.options.msg[msg] || msg
 
-      errors[dataName].push(renderMsg(validationMsg, validation || {}))
+      validation.field = validation.field || dataName
+
+      errors[dataName].push(renderMsg.call(this, validationMsg, validation))
     })
   })
 }
 
 function validate (path, value, dataValidations) {
   let errors = []
-
   if (dataValidations.if && !dataValidations.if.call(this)) {
     return
   }
@@ -62,14 +69,26 @@ function validate (path, value, dataValidations) {
     return
   }
 
+  if (typeof dataValidations === 'string') {
+    return
+  }
+
   Object.entries(dataValidations).forEach(([name, args]) => {
     let validation = this.$vuelidation.methods[name]
+    let msgArgs = dataValidations
+    let dataArgs = dataValidations[name]
+
+    msgArgs.field = msgArgs.field || path
+
+    if (typeof dataArgs === 'object') {
+      Object.assign(msgArgs, dataValidations[name])
+    }
 
     if (validation) {
-      const [valid, msg] = validation(value, args)
+      let [valid, msg] = validation(value, args)
 
       if (!valid) {
-        errors.push(renderMsg(msg, args))
+        errors.push(renderMsg.call(this, msg, msgArgs))
       }
     }
   })
