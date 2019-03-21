@@ -141,6 +141,24 @@ Vue.use(Vuelidation);
 
 <details>
 <summary>
+  <a href='#validations-length'><b>length</b></a>
+  <p style='margin: 0; '>
+    <ul style='margin: 0; padding: 0; list-style-type: none;'>
+      <li><b>msg:</b> Must be {{ length }} character(s)</li>
+      <li><b>arg:</b> Number</li>
+    </ul>
+  </p>
+</summary>
+
+```javascript
+{
+  length: 16,
+}
+```
+</details>
+
+<details>
+<summary>
   <a href='#validations-between'><b>between</b></a>
   <p style='margin: 0; '>
     <ul style='margin: 0; padding: 0; list-style-type: none;'>
